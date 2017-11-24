@@ -23,6 +23,7 @@ def on_resource_changed(event):
 
     for change in event.impacted_records:
         print("Record changed:", change)
+        client.connect("localhost", 6600)
         record = change['new']
         if record.get('status', 'off') == 'on':
             client.clear()
