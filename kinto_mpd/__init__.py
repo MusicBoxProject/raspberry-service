@@ -4,7 +4,6 @@ from kinto.core.events import ResourceChanged
 from mpd import MPDClient
 
 client = MPDClient()
-client.connect("localhost", 6600)
 
 __version__ = '0.1.0'
 __author__ = 'Mathieu Agopian <mathieu@agopian.info>'
@@ -26,7 +25,8 @@ def on_resource_changed(event):
         print("Record changed:", change)
         record = change['new']
         if record.get('status', 'off') == 'on':
+            client.clear()
             client.load(record['id'])
-            client.next()
+            client.play(0)
         else:
             client.stop()
