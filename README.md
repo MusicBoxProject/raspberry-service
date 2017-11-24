@@ -1,2 +1,3 @@
-# raseberry-service
-A systemd service that monitor a Kinto bucket to sync config updates.
+# raspberry-service
+
+A Kinto plugin to start/stop playing a playlist on MPD.
