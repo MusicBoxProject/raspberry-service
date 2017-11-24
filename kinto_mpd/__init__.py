@@ -25,7 +25,7 @@ def on_resource_changed(event):
     for change in event.impacted_records:
         print("Record changed:", change)
         record = change['new']
-        if record.get('status', False):
+        if record.get('status', 'off') == 'on':
             client.load(record['id'])
             client.next()
         else:
