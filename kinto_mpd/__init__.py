@@ -36,3 +36,4 @@ def on_resource_changed(event):
             print("Exception:", e)
         finally:
             client.close()
+            client.disconnect()
