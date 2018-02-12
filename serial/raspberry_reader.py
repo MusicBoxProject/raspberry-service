@@ -18,7 +18,11 @@ while True:
             if uid != previous_uid:
                 previous_uid = uid
                 print("UID: " + str(uid))
-            else:
+        else:
+            if previous_uid:
                 print("Tag removed")
+            previous_uid = None
     else:
-        print("Tag removed")
+        if previous_uid:
+            print("Tag removed")
+        previous_uid = None
