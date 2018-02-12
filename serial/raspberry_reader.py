@@ -1,10 +1,6 @@
 from pirc522 import RFID
 
 
-class TimeoutErro(Exception):
-    pass
-
-
 rc522 = RFID()
 previous_uid = None
 
