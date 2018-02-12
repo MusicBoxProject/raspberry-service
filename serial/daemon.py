@@ -1,5 +1,4 @@
 import re
-import time
 from serial import Serial
 from mpd import MPDClient
 
