@@ -17,17 +17,20 @@ def hexlify_uid(uid):
     return ''.join('{:02x}'.format(byte) for byte in uid).upper()
 
 
-def manage_mpd(tagID, action):
+def manage_mpd(tagID, action, previous_playlist=False):
     try:
         client.connect("localhost", 6600)
         if action == "stop":
             print("Stopping", tagID)
-            client.stop()
+            client.pause()
         elif action == "play":
             print("Starting", tagID)
-            client.clear()
-            client.load(tagID)
-            client.play(0)
+            if tagID == previous_playlist:
+                client.play()
+            else:
+                client.clear()
+                client.load(tagID)
+                client.play(0)
     except Exception as e:
         print('Error', e)
     finally:
@@ -39,6 +42,7 @@ rc522 = RFID()
 client = MPDClient()
 
 previous_uid = None
+previous_playlist = None
 while True:
     rc522.wait_for_tag()
     (error, tag_type) = rc522.request()
@@ -49,10 +53,17 @@ while True:
         uid = hexlify_uid(uid)
         if not error:
             if uid != previous_uid:
-                manage_mpd(uid, "play")
+                manage_mpd(uid, "play", previous_playlist)
                 previous_uid = uid
         else:
             print("ERROR")
             if previous_uid:
                 manage_mpd(previous_uid, "stop")
+            previous_playlist = previous_uid
             previous_uid = None
+    else:
+        print("ERROR2")
+        if previous_uid:
+            manage_mpd(previous_uid, "stop")
+        previous_playlist = previous_uid
+        previous_uid = None
